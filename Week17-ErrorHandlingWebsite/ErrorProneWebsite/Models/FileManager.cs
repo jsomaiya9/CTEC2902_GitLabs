@@ -23,10 +23,34 @@ namespace ErrorProneWebsite.Models
 
         public string GetContent()
         {
+            string contentMessage = String.Empty;
+            StreamReader streamReader = null;
 
-            StreamReader streamReader = new StreamReader(_contentFilePath);
+            try
+            {
+                streamReader = new StreamReader(_contentFilePath);
+                contentMessage = streamReader.ReadToEnd();
+            }
+            catch (Exception ex)
+            {
+                contentMessage = String.Format("{0}{1}{2}",
+                    "Blimey! Something totally unexpected just happened",
+                    Environment.NewLine,
+                    ex.Message
 
-            return streamReader.ReadToEnd();
+                    );               
+            }
+            finally
+            {
+                if(streamReader != null)
+                {
+                    streamReader.Close();
+                }
+            }
+            return contentMessage;  
+            
+
+            
         }
     }
 }
